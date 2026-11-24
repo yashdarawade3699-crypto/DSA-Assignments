@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    string book;
+    Node *left, *right;
+};
+
+Node* create() {
+    string x;
+    cout << "Enter book name (-1 for no book): ";
+    cin >> x;
+
+    if (x == "-1")
+        return NULL;
+
+    Node* newNode = new Node();
+    newNode->book = x;
+
+    cout << "Left child of " << x << endl;
+    newNode->left = create();
+
+    cout << "Right child of " << x << endl;
+    newNode->right = create();
+
+    return newNode;
+}
+
+void inorder(Node* root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    cout << root->book << " ";
+    inorder(root->right);
+}
+
+void preorder(Node* root) {
+    if (root == NULL) return;
+    cout << root->book << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void postorder(Node* root) {
+    if (root == NULL) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->book << " ";
+}
+
+int main() {
+    Node* root = create();
+
+    cout << "\nInorder: ";
+    inorder(root);
+
+    cout << "\nPreorder: ";
+    preorder(root);
+
+    cout << "\nPostorder: ";
+    postorder(root);
+
+    return 0;
+}

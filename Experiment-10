@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int h[10], n, x, index;
+
+    for (int i = 0; i < 10; i++)
+        h[i] = -1;
+
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter value: ";
+        cin >> x;
+
+        index = x % 10;
+
+        while (h[index] != -1)
+            index = (index + 1) % 10;
+
+        h[index] = x;
+    }
+
+    cout << "\nHash Table:\n";
+
+    for (int i = 0; i < 10; i++)
+        cout << i << " -> " << h[i] << endl;
+
+    return 0;
+}

@@ -1,0 +1,87 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+};
+
+Node* insert(Node* root, int x) {
+    if (root == NULL) {
+        Node* temp = new Node();
+        temp->data = x;
+        temp->left = temp->right = NULL;
+        return temp;
+    }
+
+    if (x < root->data)
+        root->left = insert(root->left, x);
+    else
+        root->right = insert(root->right, x);
+
+    return root;
+}
+
+void level(Node* root) {
+    if (root == NULL) return;
+
+    queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* temp = q.front();
+        q.pop();
+
+        cout << temp->data << " ";
+
+        if (temp->left) q.push(temp->left);
+        if (temp->right) q.push(temp->right);
+    }
+}
+
+int height(Node* root) {
+    if (root == NULL) return 0;
+
+    int l = height(root->left);
+    int r = height(root->right);
+
+    return 1 + max(l, r);
+}
+
+void leaf(Node* root) {
+    if (root == NULL) return;
+
+    if (root->left == NULL && root->right == NULL)
+        cout << root->data << " ";
+
+    leaf(root->left);
+    leaf(root->right);
+}
+
+int main() {
+    Node *root = NULL, *newRoot = NULL;
+    int n, x;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        root = insert(root, x);
+        newRoot = insert(newRoot, x);
+    }
+
+    cout << "\nOriginal BST: ";
+    level(root);
+
+    cout << "\nNew BST: ";
+    level(newRoot);
+
+    cout << "\nHeight: " << height(root);
+
+    cout << "\nLeaf Nodes: ";
+    leaf(root);
+
+    return 0;
+}

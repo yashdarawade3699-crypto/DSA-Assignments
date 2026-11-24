@@ -1,0 +1,88 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+struct Node {
+    int roll;
+    string name;
+    Node *left, *right;
+};
+
+Node* insert(Node* root, int r, string n) {
+    if (root == NULL) {
+        Node* temp = new Node();
+        temp->roll = r;
+        temp->name = n;
+        temp->left = temp->right = NULL;
+        return temp;
+    }
+
+    if (r < root->roll)
+        root->left = insert(root->left, r, n);
+    else
+        root->right = insert(root->right, r, n);
+
+    return root;
+}
+
+void inorder(Node* root) {
+    stack<Node*> s;
+    Node* temp = root;
+
+    while (temp != NULL || !s.empty()) {
+        while (temp != NULL) {
+            s.push(temp);
+            temp = temp->left;
+        }
+
+        temp = s.top();
+        s.pop();
+
+        cout << temp->roll << " " << temp->name << endl;
+        temp = temp->right;
+    }
+}
+
+void preorder(Node* root) {
+    if (root == NULL) return;
+
+    stack<Node*> s;
+    s.push(root);
+
+    while (!s.empty()) {
+        Node* temp = s.top();
+        s.pop();
+
+        cout << temp->roll << " " << temp->name << endl;
+
+        if (temp->right != NULL)
+            s.push(temp->right);
+
+        if (temp->left != NULL)
+            s.push(temp->left);
+    }
+}
+
+int main() {
+    Node* root = NULL;
+    int n, roll;
+    string name;
+
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter roll number and name: ";
+        cin >> roll >> name;
+
+        root = insert(root, roll, name);
+    }
+
+    cout << "\nInorder Traversal:\n";
+    inorder(root);
+
+    cout << "\nPreorder Traversal:\n";
+    preorder(root);
+
+    return 0;
+}

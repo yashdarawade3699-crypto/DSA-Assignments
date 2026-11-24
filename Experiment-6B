@@ -1,0 +1,89 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int id;
+    Node *left, *right;
+};
+
+Node* insert(Node* root, int x) {
+    if (root == NULL) {
+        Node* temp = new Node();
+        temp->id = x;
+        temp->left = temp->right = NULL;
+        return temp;
+    }
+
+    if (x < root->id)
+        root->left = insert(root->left, x);
+    else
+        root->right = insert(root->right, x);
+
+    return root;
+}
+
+void level(Node* root) {
+    if (root == NULL) return;
+
+    queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* temp = q.front();
+        q.pop();
+
+        cout << temp->id << " ";
+
+        if (temp->left) q.push(temp->left);
+        if (temp->right) q.push(temp->right);
+    }
+}
+
+int height(Node* root) {
+    if (root == NULL) return 0;
+
+    int l = height(root->left);
+    int r = height(root->right);
+
+    return 1 + max(l, r);
+}
+
+void leaf(Node* root) {
+    if (root == NULL) return;
+
+    if (!root->left && !root->right)
+        cout << root->id << " ";
+
+    leaf(root->left);
+    leaf(root->right);
+}
+
+int main() {
+    Node *root = NULL, *newRoot = NULL;
+    int n, id;
+
+    cout << "Enter number of employees: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter employee ID: ";
+        cin >> id;
+
+        root = insert(root, id);
+        newRoot = insert(newRoot, id);
+    }
+
+    cout << "\nOriginal Tree: ";
+    level(root);
+
+    cout << "\nNew Tree: ";
+    level(newRoot);
+
+    cout << "\nHeight: " << height(root);
+
+    cout << "\nLeaf Employees: ";
+    leaf(root);
+
+    return 0;
+}

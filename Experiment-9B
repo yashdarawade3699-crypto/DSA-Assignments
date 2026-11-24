@@ -1,0 +1,59 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct Edge {
+    int u, v, cost;
+};
+
+int parent[20];
+
+int find(int x) {
+    if (parent[x] == x)
+        return x;
+    return parent[x] = find(parent[x]);
+}
+
+int main() {
+    int n, e;
+    Edge a[50];
+
+    cout << "Enter number of substations: ";
+    cin >> n;
+
+    cout << "Enter number of connections: ";
+    cin >> e;
+
+    for (int i = 0; i < e; i++) {
+        cout << "Enter two substations and cost: ";
+        cin >> a[i].u >> a[i].v >> a[i].cost;
+    }
+
+    sort(a, a + e, [](Edge x, Edge y) {
+        return x.cost < y.cost;
+    });
+
+    for (int i = 0; i < n; i++)
+        parent[i] = i;
+
+    int total = 0;
+
+    cout << "\nMinimum Wiring Connections:\n";
+
+    for (int i = 0; i < e; i++) {
+        int x = find(a[i].u);
+        int y = find(a[i].v);
+
+        if (x != y) {
+            cout << a[i].u << " - " << a[i].v
+                 << " Cost: " << a[i].cost << endl;
+
+            parent[x] = y;
+            total += a[i].cost;
+        }
+    }
+
+    cout << "Minimum Total Cost: " << total;
+
+    return 0;
+}

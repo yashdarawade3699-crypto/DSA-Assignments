@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    int n, id, key, found = 0;
+    string name;
+    long pos;
+
+    ofstream book("books.txt");
+    ofstream index("bookindex.txt");
+
+    cout << "Enter number of books: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter Book ID and Book Name: ";
+        cin >> id >> name;
+
+        pos = book.tellp();
+
+        book << id << " " << name << endl;
+        index << id << " " << pos << endl;
+    }
+
+    book.close();
+    index.close();
+
+    cout << "\nEnter Book ID to search: ";
+    cin >> key;
+
+    ifstream idx("bookindex.txt");
+    ifstream file("books.txt");
+
+    while (idx >> id >> pos) {
+        if (id == key) {
+            file.seekg(pos);
+            file >> id >> name;
+
+            cout << "\nBook Found!";
+            cout << "\nBook ID: " << id;
+            cout << "\nBook Name: " << name;
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        cout << "\nBook Not Found";
+
+    idx.close();
+    file.close();
+
+    return 0;
+}

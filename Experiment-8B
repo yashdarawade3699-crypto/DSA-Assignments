@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int n, e, u, v, start;
+
+    cout << "Enter number of users: ";
+    cin >> n;
+
+    vector<int> adj[20];
+
+    cout << "Enter number of friendships: ";
+    cin >> e;
+
+    for (int i = 0; i < e; i++) {
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    cout << "Enter starting user: ";
+    cin >> start;
+
+    int visited[20] = {0};
+    queue<int> q;
+
+    q.push(start);
+    visited[start] = 1;
+
+    cout << "\nUsers level-wise:\n";
+
+    while (!q.empty()) {
+        int size = q.size();
+
+        while (size--) {
+            int x = q.front();
+            q.pop();
+
+            cout << x << " ";
+
+            for (int i : adj[x]) {
+                if (!visited[i]) {
+                    visited[i] = 1;
+                    q.push(i);
+                }
+            }
+        }
+        cout << endl;
+    }
+
+    return 0;
+}

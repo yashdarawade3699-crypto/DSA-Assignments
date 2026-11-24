@@ -1,0 +1,84 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+};
+
+Node* insert(Node* root, int x) {
+    if (root == NULL) {
+        Node* temp = new Node();
+        temp->data = x;
+        temp->left = temp->right = NULL;
+        return temp;
+    }
+
+    if (x < root->data)
+        root->left = insert(root->left, x);
+    else
+        root->right = insert(root->right, x);
+
+    return root;
+}
+
+void inorder(Node* root) {
+    stack<Node*> s;
+    Node* temp = root;
+
+    while (temp != NULL || !s.empty()) {
+        while (temp != NULL) {
+            s.push(temp);
+            temp = temp->left;
+        }
+
+        temp = s.top();
+        s.pop();
+
+        cout << temp->data << " ";
+        temp = temp->right;
+    }
+}
+
+void preorder(Node* root) {
+    if (root == NULL) return;
+
+    stack<Node*> s;
+    s.push(root);
+
+    while (!s.empty()) {
+        Node* temp = s.top();
+        s.pop();
+
+        cout << temp->data << " ";
+
+        if (temp->right != NULL)
+            s.push(temp->right);
+
+        if (temp->left != NULL)
+            s.push(temp->left);
+    }
+}
+
+int main() {
+    Node* root = NULL;
+    int n, x;
+
+    cout << "Enter number of nodes: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter value: ";
+        cin >> x;
+        root = insert(root, x);
+    }
+
+    cout << "\nInorder: ";
+    inorder(root);
+
+    cout << "\nPreorder: ";
+    preorder(root);
+
+    return 0;
+}

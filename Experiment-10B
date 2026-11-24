@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int parking[10], n, vehicle, slot;
+
+    for (int i = 0; i < 10; i++)
+        parking[i] = -1;
+
+    cout << "Enter number of vehicles: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter vehicle number: ";
+        cin >> vehicle;
+
+        slot = vehicle % 10;
+
+        while (parking[slot] != -1)
+            slot = (slot + 1) % 10;
+
+        parking[slot] = vehicle;
+
+        cout << "Vehicle parked at slot: "
+             << slot << endl;
+    }
+
+    cout << "\nParking Status:\n";
+
+    for (int i = 0; i < 10; i++) {
+        cout << "Slot " << i << ": ";
+
+        if (parking[i] == -1)
+            cout << "Empty";
+        else
+            cout << parking[i];
+
+        cout << endl;
+    }
+
+    return 0;
+}

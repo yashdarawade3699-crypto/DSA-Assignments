@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+int a[20][20], visited[20], n;
+
+void DFS(int v) {
+    cout << v << " ";
+    visited[v] = 1;
+
+    for (int i = 0; i < n; i++) {
+        if (a[v][i] == 1 && !visited[i])
+            DFS(i);
+    }
+}
+
+int main() {
+    int e, u, v, start;
+
+    cout << "Enter vertices: ";
+    cin >> n;
+
+    cout << "Enter edges: ";
+    cin >> e;
+
+    for (int i = 0; i < e; i++) {
+        cin >> u >> v;
+        a[u][v] = 1;
+        a[v][u] = 1;
+    }
+
+    cout << "Enter starting vertex: ";
+    cin >> start;
+
+    cout << "DFS: ";
+    DFS(start);
+
+    return 0;
+}

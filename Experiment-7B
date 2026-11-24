@@ -1,0 +1,40 @@
+#include <iostream>
+using namespace std;
+
+int a[20][20], visited[20], n;
+
+void DFS(int v) {
+    cout << "Location " << v << " ";
+    visited[v] = 1;
+
+    for (int i = 0; i < n; i++) {
+        if (a[v][i] == 1 && !visited[i])
+            DFS(i);
+    }
+}
+
+int main() {
+    int e, u, v, start;
+
+    cout << "Enter number of locations: ";
+    cin >> n;
+
+    cout << "Enter number of roads: ";
+    cin >> e;
+
+    for (int i = 0; i < e; i++) {
+        cout << "Enter road between locations: ";
+        cin >> u >> v;
+
+        a[u][v] = 1;
+        a[v][u] = 1;
+    }
+
+    cout << "Enter starting location: ";
+    cin >> start;
+
+    cout << "\nDFS Road Exploration: ";
+    DFS(start);
+
+    return 0;
+}

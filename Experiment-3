@@ -1,0 +1,159 @@
+#include <iostream>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node* next;
+
+    Node(int value)
+    {
+        data = value;
+        next = NULL;
+    }
+};
+
+class LinkedList
+{
+private:
+    Node* head;
+
+public:
+    LinkedList()
+    {
+        head = NULL;
+    }
+
+    // Insert Node
+    void insert(int value)
+    {
+        Node* newNode = new Node(value);
+
+        if (head == NULL)
+        {
+            head = newNode;
+        }
+        else
+        {
+            Node* temp = head;
+
+            while (temp->next != NULL)
+            {
+                temp = temp->next;
+            }
+
+            temp->next = newNode;
+        }
+
+        cout << value << " inserted successfully.\n";
+    }
+
+    // Delete Node
+    void deleteNode(int value)
+    {
+        if (head == NULL)
+        {
+            cout << "List is empty.\n";
+            return;
+        }
+
+        if (head->data == value)
+        {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+
+            cout << value << " deleted successfully.\n";
+            return;
+        }
+
+        Node* temp = head;
+
+        while (temp->next != NULL && temp->next->data != value)
+        {
+            temp = temp->next;
+        }
+
+        if (temp->next == NULL)
+        {
+            cout << "Value not found.\n";
+            return;
+        }
+
+        Node* del = temp->next;
+        temp->next = del->next;
+        delete del;
+
+        cout << value << " deleted successfully.\n";
+    }
+
+    // Display List
+    void display()
+    {
+        if (head == NULL)
+        {
+            cout << "List is empty.\n";
+            return;
+        }
+
+        Node* temp = head;
+
+        cout << "Linked List: ";
+
+        while (temp != NULL)
+        {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+
+        cout << "NULL\n";
+    }
+};
+
+int main()
+{
+    LinkedList list;
+    int choice, value;
+
+    do
+    {
+        cout << "\n===== Singly Linked List Menu =====\n";
+        cout << "1. Insert Node\n";
+        cout << "2. Delete Node\n";
+        cout << "3. Display List\n";
+        cout << "4. Exit\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            cout << "Enter value: ";
+            cin >> value;
+            list.insert(value);
+            break;
+
+        case 2:
+            cout << "Enter value to delete: ";
+            cin >> value;
+            list.deleteNode(value);
+            break;
+
+        case 3:
+            list.display();
+            break;
+
+        case 4:
+            cout << "Exiting\n";
+            break;
+
+        default:
+            cout << "Invalid Choice!\n";
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}

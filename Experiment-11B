@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+void heapify(int a[], int n, int i, bool maxHeap) {
+    int largest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n &&
+       (maxHeap ? a[l] > a[largest] : a[l] < a[largest]))
+        largest = l;
+
+    if (r < n &&
+       (maxHeap ? a[r] > a[largest] : a[r] < a[largest]))
+        largest = r;
+
+    if (largest != i) {
+        swap(a[i], a[largest]);
+        heapify(a, n, largest, maxHeap);
+    }
+}
+
+int main() {
+    int a[50], n, ch;
+
+    cout << "Enter number of players: ";
+    cin >> n;
+
+    cout << "Enter player scores:\n";
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+
+    cout << "1. Ascending Ranking";
+    cout << "\n2. Descending Ranking";
+    cout << "\nEnter choice: ";
+    cin >> ch;
+
+    bool maxHeap = (ch == 1);
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(a, n, i, maxHeap);
+
+    for (int i = n - 1; i > 0; i--) {
+        swap(a[0], a[i]);
+        heapify(a, i, 0, maxHeap);
+    }
+
+    cout << "\nLeaderboard Scores:\n";
+
+    for (int i = 0; i < n; i++)
+        cout << a[i] << " ";
+
+    return 0;
+}
